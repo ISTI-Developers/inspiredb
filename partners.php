@@ -1,7 +1,7 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
-header('Access-Control-Allow-Headers: Origin, Content-Type: *');
+header('Access-Control-Allow-Headers: Origin, Content-Type');
 require 'controllers/partners_controller.php';
 
 $partners = new Partners();
@@ -10,7 +10,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         if (isset($_GET['id'])) {
             echo json_encode($partners->retrieveOnePartner($_GET['id']));
         } else {
-             $result = $partners->retrievePartners();
+            $result = $partners->retrievePartners();
             $json = $partners->utf8ize($result);
             $json = json_encode($json);
             if (json_last_error() !== JSON_ERROR_NONE) {
