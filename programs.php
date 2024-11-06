@@ -40,44 +40,53 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
     case 'POST':
         if (isset($_POST['id'])) {
-            $data = json_decode($_POST['data']);
-            $title = $data->title;
-            $overview = $data->overview;
-            $date = $data->program_date;
-            $time_start = $data->time_start;
-            $time_end = $data->time_end;
-            $content = $data->content;
-            $filePath = $data->path;
-            $facilitator = $data->facilitator;
-            $category = $data->category;
-            $num_reg_limit = $data->num_reg_limit;
-            $date_reg_limit = $data->date_reg_limit;
-
-            $content = json_encode($content);
-            file_put_contents($filePath, $content);
-
-            if (isset($_FILES['image'])) {
-                $image = $_FILES['image'];
-                if ($image['error'] === UPLOAD_ERR_OK) {
-                    $targetPath = "/images/programs/" . $image['name'];
-                    if ($programs->updateProgram($_POST['id'], $title, $targetPath, $facilitator, $overview, $filePath, $category, $date, $time_start, $time_end, $num_reg_limit, $date_reg_limit)) {
-                        $targetPath = "." . $targetPath;
-                        if (move_uploaded_file($image['tmp_name'], $targetPath)) {
-                            echo "Program updated!";
-                        } else {
-                            echo "Error file upload!";
-                        }
-                    } else {
-                        echo "Error database!";
-                    }
+            if (isset($_POST['isFeatured'])) {
+                $isFeatured = filter_var($_POST['isFeatured'], FILTER_VALIDATE_BOOLEAN);
+                if ($programs->updateIsFeatured($_POST['id'], $isFeatured)) {
+                    echo "isFeatured status updated!";
                 } else {
-                    echo "Error file!";
+                    echo "Error updating isFeatured status.";
                 }
             } else {
-                if ($programs->updateProgram($_POST['id'], $title, $data->image, $facilitator, $overview, $filePath, $category, $date, $time_start, $time_end, $num_reg_limit, $date_reg_limit)) {
-                    echo "Program updated!";
+                $data = json_decode($_POST['data']);
+                $title = $data->title;
+                $overview = $data->overview;
+                $date = $data->program_date;
+                $time_start = $data->time_start;
+                $time_end = $data->time_end;
+                $content = $data->content;
+                $filePath = $data->path;
+                $facilitator = $data->facilitator;
+                $category = $data->category;
+                $num_reg_limit = $data->num_reg_limit;
+                $date_reg_limit = $data->date_reg_limit;
+
+                $content = json_encode($content);
+                file_put_contents($filePath, $content);
+
+                if (isset($_FILES['image'])) {
+                    $image = $_FILES['image'];
+                    if ($image['error'] === UPLOAD_ERR_OK) {
+                        $targetPath = "/images/programs/" . $image['name'];
+                        if ($programs->updateProgram($_POST['id'], $title, $targetPath, $facilitator, $overview, $filePath, $category, $date, $time_start, $time_end, $num_reg_limit, $date_reg_limit)) {
+                            $targetPath = "." . $targetPath;
+                            if (move_uploaded_file($image['tmp_name'], $targetPath)) {
+                                echo "Program updated!";
+                            } else {
+                                echo "Error file upload!";
+                            }
+                        } else {
+                            echo "Error database!";
+                        }
+                    } else {
+                        echo "Error file!";
+                    }
                 } else {
-                    echo "Update error";
+                    if ($programs->updateProgram($_POST['id'], $title, $data->image, $facilitator, $overview, $filePath, $category, $date, $time_start, $time_end, $num_reg_limit, $date_reg_limit)) {
+                        echo "Program updated!";
+                    } else {
+                        echo "Update error";
+                    }
                 }
             }
         } else {
@@ -96,7 +105,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
             $content = json_encode($content);
 
-            $id =  uniqid() . date("YmdHis"); //6635fec2496ac
+            $id = uniqid() . date("YmdHis");
 
             $filePath = './programs/' . $id . '.json';
 

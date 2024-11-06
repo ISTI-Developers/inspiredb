@@ -29,9 +29,16 @@ class Programs extends Controller
         $this->setStatement("UPDATE `programs` SET `title` = ? ,`image` = ?,`facilitator` = ?, `overview` = ?, `description` = ?, `category` = ?, `program_date` = ?, `time_start` = ?, `time_end` = ?, `num_reg_limit` = ?, `date_reg_limit` = ?, `agenda` = ? WHERE program_id = ? AND `status` = 1");
         return $this->statement->execute([$title, $image, $facilitator, $overview, $description, $category, $program_date, $time_start, $time_end, $num_reg_limit, $date_reg_limit, $agenda, $id]);
     }
+    function updateIsFeatured($id, $isFeatured)
+    {
+        $this->setStatement("UPDATE `programs` SET `isFeatured` = ? WHERE `program_id` = ?");
+        return $this->statement->execute([$isFeatured ? 1 : 0, $id]);
+    }
+
     function deleteProgram($id)
     {
         $this->setStatement("UPDATE `programs` SET `status` = 0 WHERE program_id = ?");
         return $this->statement->execute([$id]);
     }
+
 }
