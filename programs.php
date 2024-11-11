@@ -60,6 +60,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 $category = $data->category;
                 $num_reg_limit = $data->num_reg_limit;
                 $date_reg_limit = $data->date_reg_limit;
+                $price = $data->price;
 
                 $content = json_encode($content);
                 file_put_contents($filePath, $content);
@@ -68,7 +69,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     $image = $_FILES['image'];
                     if ($image['error'] === UPLOAD_ERR_OK) {
                         $targetPath = "/images/programs/" . $image['name'];
-                        if ($programs->updateProgram($_POST['id'], $title, $targetPath, $facilitator, $overview, $filePath, $category, $date, $time_start, $time_end, $num_reg_limit, $date_reg_limit)) {
+                        if ($programs->updateProgram($_POST['id'], $title, $targetPath, $facilitator, $overview, $filePath, $category, $date, $time_start, $time_end, $num_reg_limit, $date_reg_limit, 'none', $price)) {
                             $targetPath = "." . $targetPath;
                             if (move_uploaded_file($image['tmp_name'], $targetPath)) {
                                 echo "Program updated!";
@@ -82,7 +83,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                         echo "Error file!";
                     }
                 } else {
-                    if ($programs->updateProgram($_POST['id'], $title, $data->image, $facilitator, $overview, $filePath, $category, $date, $time_start, $time_end, $num_reg_limit, $date_reg_limit)) {
+                    if ($programs->updateProgram($_POST['id'], $title, $data->image, $facilitator, $overview, $filePath, $category, $date, $time_start, $time_end, $num_reg_limit, $date_reg_limit, 'none', $price)) {
                         echo "Program updated!";
                     } else {
                         echo "Update error";
@@ -102,6 +103,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $category = $data->category;
             $num_reg_limit = $data->num_reg_limit;
             $date_reg_limit = $data->date_reg_limit;
+            $price = $data->price;
 
             $content = json_encode($content);
 
@@ -114,7 +116,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             if ($image['error'] === UPLOAD_ERR_OK) {
                 $targetPath = "/images/programs/" . $image['name'];
 
-                if ($programs->insertProgram($title, $targetPath, $facilitator, $overview, $filePath, $category, $date, $time_start, $time_end, $num_reg_limit, $date_reg_limit)) {
+                if ($programs->insertProgram($title, $targetPath, $facilitator, $overview, $filePath, $category, $date, $time_start, $time_end, $num_reg_limit, $date_reg_limit, $price)) {
                     $targetPath = "." . $targetPath;
                     if (move_uploaded_file($image['tmp_name'], $targetPath)) {
                         echo "New program added!";

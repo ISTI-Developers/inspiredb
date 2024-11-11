@@ -50,15 +50,14 @@ class Controller
 
         try {
             //Server settings
-            // $mail->isSMTP();                                            //Send using SMTP
-            // $mail->Host       = 'smtp.gmail.com';                       //Set the SMTP server to send through
-            // $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            // $mail->Username   = MAIL_USERNAME;                          //SMTP username
-            // $mail->Password   = MAIL_PASSWORD;                          //SMTP password
-            // $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-            // $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-            $mail->SMTPDebug = 2;                                    //For checking Mailing errors
-            $mail->isMail();
+            $mail->isSMTP();                                            //Send using SMTP
+            $mail->Host = 'smtp.gmail.com';                       //Set the SMTP server to send through
+            $mail->SMTPAuth = true;                                   //Enable SMTP authentication
+            $mail->Username = MAIL_USERNAME;                          //SMTP username
+            $mail->Password = MAIL_PASSWORD;                          //SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+            $mail->Port = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+            // $mail->SMTPDebug = 2;                                    //For checking Mailing errors
             if ($imagePath) {
                 if (file_exists($imagePath)) {
                     $mail->addEmbeddedImage($imagePath, 'logo', 'image.png');
