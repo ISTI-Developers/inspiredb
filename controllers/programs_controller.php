@@ -22,20 +22,20 @@ class Programs extends Controller
         return $this->statement->fetch(PDO::FETCH_ASSOC); // Use associative array for easier access
     }
 
-    function insertProgram($title, $image, $facilitator, $overview, $description, $category, $program_date, $time_start, $time_end, $num_reg_limit, $date_reg_limit, $agenda = "none", $price)
+    function insertProgram($title, $image, $facilitator, $overview, $description, $category, $program_date, $time_start, $time_end, $num_reg_limit, $date_reg_limit, $price, $agenda = "none")
     {
         $this->setStatement("SET time_zone = '+8:00';");
         $this->statement->execute();
         $this->setStatement("INSERT INTO `programs`(`title`, `image`,`facilitator`, `overview`, `description`,`category`, `program_date`, `time_start`, `time_end`, `num_reg_limit`, `date_reg_limit`, `agenda`, `price`, `status`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,1)");
-        return $this->statement->execute([$title, $image, $facilitator, $overview, $description, $category, $program_date, $time_start, $time_end, $num_reg_limit, $date_reg_limit, $agenda, $price]);
+        return $this->statement->execute([$title, $image, $facilitator, $overview, $description, $category, $program_date, $time_start, $time_end, $num_reg_limit, $date_reg_limit, $price, $agenda]);
     }
 
-    function updateProgram($id, $title, $image, $facilitator, $overview, $description, $category, $program_date, $time_start, $time_end, $num_reg_limit, $date_reg_limit, $agenda = "none", $price)
+    function updateProgram($id, $title, $image, $facilitator, $overview, $description, $category, $program_date, $time_start, $time_end, $num_reg_limit, $date_reg_limit, $price, $agenda = "none")
     {
         $this->setStatement("SET time_zone = '+8:00';");
         $this->statement->execute();
         $this->setStatement("UPDATE `programs` SET `title` = ? ,`image` = ?,`facilitator` = ?, `overview` = ?, `description` = ?, `category` = ?, `program_date` = ?, `time_start` = ?, `time_end` = ?, `num_reg_limit` = ?, `date_reg_limit` = ?, `agenda` = ?, `price` = ? WHERE program_id = ? AND `status` = 1");
-        return $this->statement->execute([$title, $image, $facilitator, $overview, $description, $category, $program_date, $time_start, $time_end, $num_reg_limit, $date_reg_limit, $agenda, $price, $id]);
+        return $this->statement->execute([$title, $image, $facilitator, $overview, $description, $category, $program_date, $time_start, $time_end, $num_reg_limit, $date_reg_limit, $price, $agenda, $id]);
     }
     function updateIsFeatured($id, $isFeatured)
     {
