@@ -26,7 +26,7 @@ class Programs extends Controller
     {
         $this->setStatement("SET time_zone = '+8:00';");
         $this->statement->execute();
-        $this->setStatement("INSERT INTO `programs`(`title`, `image`,`facilitator`, `overview`, `description`,`category`, `program_date`, `time_start`, `time_end`, `num_reg_limit`, `date_reg_limit`, `agenda`, `price`, `status`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,1)");
+        $this->setStatement("INSERT INTO `programs`(`title`, `image`,`facilitator`, `overview`, `description`,`category`, `program_date`, `time_start`, `time_end`, `num_reg_limit`, `date_reg_limit`, `price`, `agenda`, `status`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,1)");
         return $this->statement->execute([$title, $image, $facilitator, $overview, $description, $category, $program_date, $time_start, $time_end, $num_reg_limit, $date_reg_limit, $price, $agenda]);
     }
 
@@ -34,7 +34,7 @@ class Programs extends Controller
     {
         $this->setStatement("SET time_zone = '+8:00';");
         $this->statement->execute();
-        $this->setStatement("UPDATE `programs` SET `title` = ? ,`image` = ?,`facilitator` = ?, `overview` = ?, `description` = ?, `category` = ?, `program_date` = ?, `time_start` = ?, `time_end` = ?, `num_reg_limit` = ?, `date_reg_limit` = ?, `agenda` = ?, `price` = ? WHERE program_id = ? AND `status` = 1");
+        $this->setStatement("UPDATE `programs` SET `title` = ? ,`image` = ?,`facilitator` = ?, `overview` = ?, `description` = ?, `category` = ?, `program_date` = ?, `time_start` = ?, `time_end` = ?, `num_reg_limit` = ?, `date_reg_limit` = ?, `price` = ?, `agenda` = ? WHERE program_id = ? AND `status` = 1");
         return $this->statement->execute([$title, $image, $facilitator, $overview, $description, $category, $program_date, $time_start, $time_end, $num_reg_limit, $date_reg_limit, $price, $agenda, $id]);
     }
     function updateIsFeatured($id, $isFeatured)

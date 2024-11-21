@@ -69,7 +69,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     $image = $_FILES['image'];
                     if ($image['error'] === UPLOAD_ERR_OK) {
                         $targetPath = "/images/programs/" . $image['name'];
-                        if ($programs->updateProgram($_POST['id'], $title, $targetPath, $facilitator, $overview, $filePath, $category, $date, $time_start, $time_end, $num_reg_limit, $date_reg_limit, 'none', $price)) {
+                        if ($programs->updateProgram($_POST['id'], $title, $targetPath, $facilitator, $overview, $filePath, $category, $date, $time_start, $time_end, $num_reg_limit, $date_reg_limit, $price, 'none')) {
                             $targetPath = "." . $targetPath;
                             if (move_uploaded_file($image['tmp_name'], $targetPath)) {
                                 echo "Program updated!";
@@ -83,7 +83,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                         echo "Error file!";
                     }
                 } else {
-                    if ($programs->updateProgram($_POST['id'], $title, $data->image, $facilitator, $overview, $filePath, $category, $date, $time_start, $time_end, $num_reg_limit, $date_reg_limit, 'none', $price)) {
+                    if ($programs->updateProgram($_POST['id'], $title, $data->image, $facilitator, $overview, $filePath, $category, $date, $time_start, $time_end, $num_reg_limit, $date_reg_limit, $price, 'none')) {
                         echo "Program updated!";
                     } else {
                         echo "Update error";
