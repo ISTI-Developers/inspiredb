@@ -44,30 +44,36 @@ class Controller
         }
     }
 
-    function sendMail($subject, $message, $receipientEmail = MAIL_USERNAME, $receipientName = MAIL_NAME, $imagePath = NULL)
+    function sendMail($subject, $message, $receipientEmail = MAIL_USERNAME, $receipientName = MAIL_NAME, $imagePath = NULL, $attachments = [])
     {
         $mail = new PHPMailer(true);
 
         try {
-            //Server settings
-            $mail->isSMTP();                                            //Send using SMTP
-            $mail->Host = 'smtp.gmail.com';                       //Set the SMTP server to send through
-            $mail->SMTPAuth = true;                                   //Enable SMTP authentication
-            $mail->Username = MAIL_USERNAME;                          //SMTP username
-            $mail->Password = MAIL_PASSWORD;                          //SMTP password
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-            $mail->Port = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-            // $mail->SMTPDebug = 2;                                    //For checking Mailing errors
+            // Server settings
+            $mail->isSMTP();                                  // Send using SMTP
+            $mail->Host = 'smtp.gmail.com';                   // Set the SMTP server to send through
+            $mail->SMTPAuth = true;                           // Enable SMTP authentication
+            $mail->Username = MAIL_USERNAME;                  // SMTP username
+            $mail->Password = MAIL_PASSWORD;                  // SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;  // Enable implicit TLS encryption
+            $mail->Port = 465;                                // TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+            // $mail->SMTPDebug = 2;                          // For checking Mailing errors
+
             if ($imagePath) {
                 if (file_exists($imagePath)) {
                     $mail->addEmbeddedImage($imagePath, 'logo', 'image.png');
                 } else {
-                    return "Unable to access" . $imagePath;
+                    return "Unable to access " . $imagePath;
                 }
             }
             $mail->setFrom(MAIL_FROM, MAIL_NAME);
             $mail->addAddress($receipientEmail, $receipientName);
 
+            // Attachments
+            foreach ($attachments as $attachment) {
+                $fileNameWithoutSuffix = preg_replace('/(_[0-9]+)$/', '', basename($attachment));
+                $mail->addAttachment("." . $attachment, $fileNameWithoutSuffix);
+            }
             $mail->isHTML(true);
             $mail->Subject = $subject;
             $mail->Body = $message;
