@@ -77,7 +77,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     $message2 = str_replace("[training_objective]", $_POST['training_objective'], $message2);
                     
                     $mail1 = $inquiry->sendMail("Thank you for your Inquiry!", $message1, $_POST['email'], $_POST['name']);
-                    $mail2 = $inquiry->sendMail("New Inquiry!", $message2, "ameerojo@gmail.com", "", NULL, json_decode($urls, true));
+                    $mail2 = $inquiry->sendMail("New Inquiry!", $message2, "ask@inspireleaders.com.ph", "", NULL, json_decode($urls, true));
                     
                     if ($mail1 && $mail2) {
                         echo "Thank you for your inquiry! We'll get back to you shortly.";
