@@ -19,13 +19,6 @@
     <b>Time</b>: [fromTime] - [toTime]
     <br>
     <hr>
-    To complete your registration, please send your payment within 2 - 3 business days. Below are our available payment options:
-    <br>
-    <br>
-    [payment options]
-    <br>
-    We look forward to receiving your payment and having you as part of our program. If you have any questions or need further assistance, please don't hesitate to contact us.
-    <br>
     <br>
     Warm Regards,
     <br>

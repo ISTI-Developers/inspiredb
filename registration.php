@@ -16,13 +16,33 @@ switch ($_SERVER['REQUEST_METHOD']) {
         }
         break;
     case 'POST':
-        if (isset($_POST['registration_type']) && isset($_POST['first_name']) && isset($_POST['last_name']) && isset($_POST['email_address']) && isset($_POST['mobile_number']) && isset($_POST['tin_num']) && isset($_POST['source_platform']) && isset($_POST['program_id']) && isset($_POST['company_name']) && isset($_POST['position'])) {
-            $uuid = substr(uniqid(), 0, 8);
+        if (
+            isset($_POST['registration_type']) && isset($_POST['first_name']) &&
+            isset($_POST['last_name']) && isset($_POST['email_address']) && isset($_POST['mobile_number']) &&
+            isset($_POST['tin_num']) && isset($_POST['source_platform']) && isset($_POST['meal']) &&
+            isset($_POST['voucher']) && isset($_POST['referred_by']) && isset($_POST['program_id']) && isset($_POST['company_name']) &&
+            isset($_POST['position'])
+        ) {
             $more_than_ten = isset($_FILES['more_than_ten']) ? $_FILES['more_than_ten'] : null;
             $targetPath2 = ($more_than_ten && $more_than_ten['error'] === UPLOAD_ERR_OK)
                 ? "/images/excelFiles/" . $more_than_ten['name']
                 : null;
-            if ($registration->insertRegistration($_POST['registration_type'], $_POST['first_name'], $_POST['last_name'], $_POST['email_address'], $_POST['mobile_number'], $_POST['tin_num'], $_POST['source_platform'], $_POST['program_id'], $_POST['company_name'], $_POST['position'], $targetPath2)) {
+            if ($registration->insertRegistration(
+                $_POST['registration_type'],
+                $_POST['first_name'],
+                $_POST['last_name'],
+                $_POST['email_address'],
+                $_POST['mobile_number'],
+                $_POST['tin_num'],
+                $_POST['source_platform'],
+                $_POST['meal'],
+                $_POST['voucher'],
+                $_POST['referred_by'],
+                $_POST['program_id'],
+                $_POST['company_name'],
+                $_POST['position'],
+                $targetPath2
+            )) {
                 $success = true;
                 if ($more_than_ten && $more_than_ten['error'] === UPLOAD_ERR_OK) {
                     $targetPath2 = "." . $targetPath2;
@@ -41,14 +61,13 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     $message = str_replace("[date]", date("F d, Y", strtotime($program->program_date)), $message);
                     $message = str_replace("[fromTime]", date("g:i A", strtotime($program->time_start)), $message);
                     $message = str_replace("[toTime]", date("g:i A", strtotime($program->time_end)), $message);
-                    $message = str_replace("[payment options]", formatOptions(), $message);
-                    // $mail = $registration->sendMail("Thank you for your Registration!", $message, $_POST['email_address'], $_POST['first_name'] . " " . $_POST['last_name'], '.' . $program->image);
-                    // if ($mail) {
-                    //     echo "Registration almost complete! Please check your email for further instructions.";
-                    // } else {
-                    //     echo "Error sending email!";
-                    // }
-                    // echo "Registration successful";
+                    $mail = $registration->sendMail("Thank you for your Registration!", $message, $_POST['email_address'], $_POST['first_name'] . " " . $_POST['last_name'], '.' . $program->image);
+                    if ($mail) {
+                        echo "Registration complete! Kindly proceed to checkout.";
+                    } else {
+                        echo "Error sending email!";
+                    }
+                    echo "Registration successful";
                 } else {
                     echo "Error uploading file!";
                 }
@@ -62,7 +81,23 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'PUT':
         $info = json_decode(file_get_contents('php://input'));
         if (
-            $registration->updateRegistration($info->id, $info->registration_type, $info->first_name, $info->last_name, $info->email_address, $info->mobile_number, $info->tin_num, $info->source_platform, $info->program_id, $info->company_name, $info->position, $info->more_than_ten)
+            $registration->updateRegistration(
+                $info->id,
+                $info->registration_type,
+                $info->first_name,
+                $info->last_name,
+                $info->email_address,
+                $info->mobile_number,
+                $info->tin_num,
+                $info->source_platform,
+                $info->meal,
+                $info->voucher,
+                $info->referred_by,
+                $info->program_id,
+                $info->company_name,
+                $info->position,
+                $info->more_than_ten
+            )
         ) {
             echo "Registration updated!";
         } else {

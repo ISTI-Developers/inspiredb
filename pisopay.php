@@ -11,6 +11,7 @@ require_once "pisopay/module/MainProcess.php";
 require 'controllers/programs_controller.php';
 
 use PHP\module\MainProcess as Checkout;
+
 $programs = new Programs();
 
 $input = json_decode(file_get_contents('php://input'), true);
@@ -19,6 +20,12 @@ $customer_name = ($_POST['first_name'] ?? 'Default') . " " . ($_POST['last_name'
 $customer_email = $_POST['email_address'] ?? 'default@example.com';
 $customer_phone = $_POST['mobile_number'] ?? '0000000000';
 $program_id = $_POST['program_id'] ?? null;
+
+$customer_meal = $_POST['meal'] ?? "";
+$customer_meal_price = (float) ($_POST['meal_price'] ?? 0);
+
+$voucher = $_POST['voucher'] ?? "";
+$voucher_price = (float) ($_POST['voucher_price'] ?? 0);
 
 $merchant_trace_no = "thi" . rand(0, 99999);
 $quantity = $_POST['quantity'] ?? 1;
@@ -41,8 +48,19 @@ $session_id = $f->sessionGenerate();
 if ($session_id) {
     $details = [
         ["name" => $program_name, "price" => $program_price, "quantity" => $quantity],
+        ["name" => $customer_meal, "price" => $customer_meal_price, "quantity" => 1],
+        ["name" => "Promo Voucher (₱" . number_format($voucher_price, 2) . ")", "price" => -$voucher_price, "quantity" => 1] // Negative price
     ];
-    $amount = $program_price * $quantity;
+
+    $amount = 0;
+
+    foreach ($details as $item) {
+        $amount += $item["price"] * $item["quantity"];
+    }
+
+    // Ensure amount does not go negative
+    $amount = max($amount, 0);
+
     $customer_ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
     $ip_address = $customer_ip ?: gethostbyname(gethostname());
 

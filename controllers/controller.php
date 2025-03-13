@@ -107,4 +107,30 @@ class Controller
         }
         return $mixed;
     }
+    function encryptVoucher($plainText)
+    {
+        $env = parse_ini_file(__DIR__ . '/../.env');
+        $secretKey = $env['SECRET_KEY'] ?? 'fallback-secret-key';
+
+        $method = "AES-256-CBC";
+        $key = hash('sha256', $secretKey, true);
+        $iv = openssl_random_pseudo_bytes(16);
+        $cipherText = openssl_encrypt($plainText, $method, $key, OPENSSL_RAW_DATA, $iv);
+
+        return base64_encode($iv . $cipherText);
+    }
+
+    function decryptVoucher($cipherText)
+    {
+        $env = parse_ini_file(__DIR__ . '/../.env');
+        $secretKey = $env['SECRET_KEY'] ?? 'fallback-secret-key';
+
+        $method = "AES-256-CBC";
+        $key = hash('sha256', $secretKey, true);
+        $cipherText = base64_decode($cipherText);
+        $iv = substr($cipherText, 0, 16);
+        $encryptedData = substr($cipherText, 16);
+
+        return openssl_decrypt($encryptedData, $method, $key, OPENSSL_RAW_DATA, $iv);
+    }
 }

@@ -30,8 +30,8 @@
 */
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $uname = "apidemoacct2023"; //input api_username
-    $pass = "KC2kRPyIiwC0H2JPNyjHbD5YVG8RGZ"; //input api_password
+    $uname = "apiilc2024"; //input api_username
+    $pass = "Q2oYJ2hgffGnGQLwgulmlF78CpbWCr"; //input api_password
 
     $combined = $uname . ":" . $pass;
 
