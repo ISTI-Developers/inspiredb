@@ -2,17 +2,17 @@
 header("Access-Control-Allow-Origin: *");
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, Content-Type');
-require 'controllers/meal_controller.php';
+require 'controllers/beverage_controller.php';
 
-$meal = new Meal();
+$beverage = new Beverage();
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
         if (isset($_GET['id'])) {
-            echo json_encode($meal->getMealById($_GET['id']));
+            echo json_encode($beverage->getBeverageById($_GET['id']));
         } else {
-            $result = $meal->getMeals();
-            $json = $meal->utf8ize($result);
+            $result = $beverage->getBeverages();
+            $json = $beverage->utf8ize($result);
             $json = json_encode($json);
             if (json_last_error() !== JSON_ERROR_NONE) {
                 echo 'JSON encoding error: ' . json_last_error_msg();
@@ -30,11 +30,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 if (isset($_FILES['image'])) {
                     $images = $_FILES['image'];
                     if ($images['error'] === UPLOAD_ERR_OK) {
-                        $targetPath = "/images/meals/" . $images['name'];
-                        if ($meal->updateMeal($_POST['id'], $_POST['name'], $_POST['price'], $targetPath)) {
+                        $targetPath = "/images/beverages/" . $images['name'];
+                        if ($beverage->updateBeverage($_POST['id'], $_POST['name'], $_POST['price'], $targetPath)) {
                             $targetPath = "." . $targetPath;
                             if (move_uploaded_file($images['tmp_name'], $targetPath)) {
-                                echo "Meal name, price, and logo added!";
+                                echo "Beverage name, price, and logo added!";
                             } else {
                                 echo "Error file upload!";
                             }
@@ -45,8 +45,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
                         echo "Error file!";
                     }
                 } else {
-                    if ($meal->updateMeal($_POST['id'], $_POST['name'], $_POST['price'])) {
-                        echo "Meal updated!";
+                    if ($beverage->updateBeverage($_POST['id'], $_POST['name'], $_POST['price'])) {
+                        echo "Beverage updated!";
                     } else {
                         echo "Error database!";
                     }
@@ -57,8 +57,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 if (isset($_FILES['image'])) {
                     $images = $_FILES['image'];
                     if ($images['error'] === UPLOAD_ERR_OK) {
-                        $targetPath = "/images/meals/" . $images['name'];
-                        if ($meal->createMeal($_POST['name'], $_POST['price'], $targetPath)) {
+                        $targetPath = "/images/beverages/" . $images['name'];
+                        if ($beverage->createBeverage($_POST['name'], $_POST['price'], $targetPath)) {
                             $targetPath = "." . $targetPath;
                             if (move_uploaded_file($images['tmp_name'], $targetPath)) {
                                 echo "Name and logo added!";
@@ -78,7 +78,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         }
         break;
     case 'DELETE':
-        if ($meal->deleteMeal($_GET["id"])) {
+        if ($beverage->deleteBeverage($_GET["id"])) {
             echo "Name and logo deleted!";
         }
         break;
