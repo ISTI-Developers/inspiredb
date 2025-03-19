@@ -57,8 +57,10 @@ class Voucher extends Controller
 
     function updateVoucher($id, $name, $value)
     {
+        $encryptedValue = $this->encryptVoucher($name);
+
         $this->setStatement("UPDATE `vouchers` SET `name` = ?, `value` = ? WHERE `voucher_id` = ? AND `status` = 1");
-        return $this->statement->execute([$name, $value, $id]);
+        return $this->statement->execute([$encryptedValue, $value, $id]);
     }
     function deleteVoucher($id)
     {

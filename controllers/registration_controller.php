@@ -21,6 +21,7 @@ class Registration extends Controller
         $last_name,
         $email_address,
         $mobile_number,
+        $address,
         $tin_num,
         $source_platform,
         $meal,
@@ -34,10 +35,10 @@ class Registration extends Controller
         $this->setStatement(
             "INSERT INTO `registration`(
                 `registration_type`, `first_name`, `last_name`, `date_reg`, 
-                `email_address`, `mobile_number`, `tin_num`, `source_platform`, 
+                `email_address`, `mobile_number`, `address`, `tin_num`, `source_platform`, 
                 `meal`, `voucher`, `referred_by`, `program_id`, `company_name`, `position`, 
                 `more_than_ten`, `status`
-            ) VALUES (?,?,?,NOW(),?,?,?,?,?,?,?,?,?,?,?,?)"
+            ) VALUES (?,?,?,NOW(),?,?,?,?,?,?,?,?,?,?,?,?,?)"
         );
         return $this->statement->execute([
             $registration_type,
@@ -45,6 +46,7 @@ class Registration extends Controller
             $last_name,
             $email_address,
             $mobile_number,
+            $address,
             $tin_num,
             $source_platform,
             $meal,
@@ -64,6 +66,7 @@ class Registration extends Controller
         $last_name,
         $email_address,
         $mobile_number,
+        $address,
         $tin_num,
         $source_platform,
         $meal,
@@ -75,7 +78,7 @@ class Registration extends Controller
         $more_than_ten
     ) {
         $this->setStatement("UPDATE `registration` SET `registration_type` = ?, `first_name` = ? , 
-        `last_name` = ?, `email_address` = ?, `mobile_number` = ?, `tin_num` = ?, 
+        `last_name` = ?, `email_address` = ?, `mobile_number` = ?, `address` = ?, `tin_num` = ?, 
         `source_platform` = ?, `meal` = ?, `voucher` = ?, `referred_by` = ?, `program_id` = ?, 
         `company_name` = ?, `position` = ?, `more_than_ten` = ? WHERE registrant_id = ? AND `status` = 1");
 
@@ -85,6 +88,7 @@ class Registration extends Controller
             $last_name,
             $email_address,
             $mobile_number,
+            $address,
             $tin_num,
             $source_platform,
             $meal,

@@ -19,6 +19,7 @@ $callbackUrl = $_POST['callback_url'] ?? 'https://www.inspireleaders.com.ph/';
 $customer_name = ($_POST['first_name'] ?? 'Default') . " " . ($_POST['last_name'] ?? 'Name');
 $customer_email = $_POST['email_address'] ?? 'default@example.com';
 $customer_phone = $_POST['mobile_number'] ?? '0000000000';
+$customer_address = $_POST['address'] ?? '2F HPL Building, 60 Sen. Gil Puyat Ave., Makati City 1200 Philippines';
 $program_id = $_POST['program_id'] ?? null;
 
 $customer_meal = $_POST['meal'] ?? "";
@@ -65,7 +66,7 @@ if ($session_id) {
     $ip_address = $customer_ip ?: gethostbyname(gethostname());
 
     $arrayPostData = [
-        'session_id' => $session_id,
+        "session_id" => $session_id,
         "branch_code" => "",
         "amount" => $amount,
         "delivery_fees" => 0,
@@ -74,7 +75,7 @@ if ($session_id) {
         "customer_name" => $customer_name,
         "customer_email" => $customer_email,
         "customer_phone" => $customer_phone,
-        "customer_address" => "2F HPL Building, 60 Sen. Gil Puyat Ave., Makati City 1200 Philippines",
+        "customer_address" => $customer_address,
         "merchant_trace_no" => $merchant_trace_no,
         "merchant_callback_url" => "#",
         "callback_url" => $callbackUrl,

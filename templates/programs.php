@@ -14,6 +14,8 @@
     <br>
     <b>Facilitator</b>: [facilitator]
     <br>
+    <b>Venue</b>: [venue]
+    <br>
     <b>Date</b>: [date]
     <br>
     <b>Time</b>: [fromTime] - [toTime]
