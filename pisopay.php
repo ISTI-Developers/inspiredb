@@ -5,6 +5,7 @@ header('Access-Control-Allow-Headers: Origin, Content-Type');
 header('Content-Type: application/json');
 header("X-Content-Type-Options: nosniff");
 header("X-Frame-Options: DENY");
+header('Content-Type: text/html; charset=UTF-8');
 
 require_once "pisopay/config/config.php";
 require_once "pisopay/module/MainProcess.php";
@@ -49,9 +50,23 @@ $session_id = $f->sessionGenerate();
 if ($session_id) {
     $details = [
         ["name" => $program_name, "price" => $program_price, "quantity" => $quantity],
-        ["name" => $customer_meal, "price" => $customer_meal_price, "quantity" => 1],
-        ["name" => "Promo Voucher (₱" . number_format($voucher_price, 2) . ")", "price" => -$voucher_price, "quantity" => 1] // Negative price
     ];
+
+    if ($customer_meal !== "No") {
+        $details[] = [
+            "name" => $customer_meal,
+            "price" => $customer_meal_price,
+            "quantity" => 1
+        ];
+    }
+
+    if (!empty($voucher)) {
+        $details[] = [
+            "name" => "Promo Voucher (" . number_format($voucher_price, 2) . ")",
+            "price" => -$voucher_price,
+            "quantity" => 1
+        ];
+    }
 
     $amount = 0;
 
