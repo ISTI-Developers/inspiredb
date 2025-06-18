@@ -2,7 +2,7 @@
 define('DB_SERVER', 'localhost');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
-define('DB_NAME', 'inspirel_newInspiredb');
+define('DB_NAME', 'isti_inspirel_newInspiredb');
 define('MAIL_USERNAME', 'admin@inspireleaders.com.ph');
 define('MAIL_FROM', 'noreply@inspireleaders.com.ph');
 define('MAIL_NAME', 'no-reply');

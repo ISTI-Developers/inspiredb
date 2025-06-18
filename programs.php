@@ -71,21 +71,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     if ($image['error'] === UPLOAD_ERR_OK) {
                         $targetPath = "/images/programs/" . $image['name'];
                         if ($programs->updateProgram(
-                            $_POST['id'],
-                            $title,
-                            $targetPath,
-                            $facilitator,
-                            $overview,
-                            $filePath,
-                            $venue,
-                            $category,
-                            $date,
-                            $time_start,
-                            $time_end,
-                            $num_reg_limit,
-                            $date_reg_limit,
-                            $price,
-                            'none'
+                            $_POST['id'],$title,$targetPath,$facilitator,$overview,$filePath,$venue,$category,$date,$time_start,$time_end,$num_reg_limit,$date_reg_limit,$price,'none'
                         )) {
                             $targetPath = "." . $targetPath;
                             if (move_uploaded_file($image['tmp_name'], $targetPath)) {

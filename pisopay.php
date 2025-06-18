@@ -9,10 +9,12 @@ header('Content-Type: text/html; charset=UTF-8');
 
 require_once "pisopay/config/config.php";
 require_once "pisopay/module/MainProcess.php";
+require 'controllers/registration_controller.php';
 require 'controllers/programs_controller.php';
 
 use PHP\module\MainProcess as Checkout;
 
+$registration = new Registration();
 $programs = new Programs();
 
 $input = json_decode(file_get_contents('php://input'), true);
@@ -105,6 +107,29 @@ if ($session_id) {
         "token" => $token,
         "data" => $arrayPostData,
     ], JSON_PRETTY_PRINT);
+
+    $tokenData = json_decode($token, true);
+    $checkoutLink = $tokenData['data']['url'] ?? '';
+
+    $program = $programs->retrieveOneProgram($program_id);
+    $message = file_get_contents('./templates/checkout.php');
+    $message = str_replace("[name]", ucwords($_POST['first_name']), $message);
+    $message = str_replace("[checkoutLink]", $checkoutLink, $message); // now using extracted link
+    $message = str_replace("[program]", $program->title, $message);
+    $message = str_replace("[facilitator]", $program->facilitator, $message);
+    $message = str_replace("[date]", date("F d, Y", strtotime($program->program_date)), $message);
+    $message = str_replace("[fromTime]", date("g:i A", strtotime($program->time_start)), $message);
+    $message = str_replace("[toTime]", date("g:i A", strtotime($program->time_end)), $message);
+    $message = str_replace("[venue]", $program->venue, $message);
+    $message = str_replace("[price]", $program->price, $message);
+
+    $mail = $registration->sendMail(
+        "Complete Your Registration for $program->title",
+        $message,
+        $_POST['email_address'],
+        $_POST['first_name'] . " " . $_POST['last_name'],
+        '.' . $program->image
+    );
 } else {
     echo json_encode(["error" => "Failed to generate session."], JSON_PRETTY_PRINT);
 }

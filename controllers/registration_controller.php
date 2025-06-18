@@ -101,6 +101,11 @@ class Registration extends Controller
             $id
         ]);
     }
+    function updateIsPaid($id, $isPaid)
+    {
+        $this->setStatement("UPDATE `registration` SET `isPaid` = ? WHERE `registrant_id` = ?");
+        return $this->statement->execute([$isPaid ? 1 : 0, $id]);
+    }
     function deleteRegistration($id)
     {
         $this->setStatement("UPDATE `registration` SET `status` = 0 WHERE registrant_id = ?");

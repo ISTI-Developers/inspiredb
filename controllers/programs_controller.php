@@ -11,10 +11,15 @@ class Programs extends Controller
     }
     function retrieveOneProgram($id)
     {
-        $this->setStatement("SELECT programs.*, COUNT(registration.registrant_id) as parts FROM programs LEFT JOIN registration ON programs.program_id = registration.program_id WHERE programs.program_id = ? AND programs.`status` = 1;");
+        $this->setStatement("SELECT programs.*, COUNT(IF(registration.isPaid = 1, 1, NULL)) AS parts 
+        FROM programs 
+        LEFT JOIN registration 
+        ON programs.program_id = registration.program_id AND registration.status = 1
+        WHERE programs.program_id = ? AND programs.`status` = 1;");
         $this->statement->execute([$id]);
         return $this->statement->fetch();
     }
+
     public function retrieveProgramDetails($id)
     {
         $this->setStatement("SELECT title, price FROM programs WHERE program_id = ?");
@@ -48,5 +53,4 @@ class Programs extends Controller
         $this->setStatement("UPDATE `programs` SET `status` = 0 WHERE program_id = ?");
         return $this->statement->execute([$id]);
     }
-
 }

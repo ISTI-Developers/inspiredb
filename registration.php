@@ -17,11 +17,50 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
     case 'POST':
         if (
-            isset($_POST['registration_type']) && isset($_POST['first_name']) &&
-            isset($_POST['last_name']) && isset($_POST['email_address']) && isset($_POST['mobile_number']) && isset($_POST['address']) &&
+            isset($_POST['id']) &&
+            isset($_POST['isPaid']) &&
+            isset($_POST['email_address']) &&
+            isset($_POST['first_name']) &&
+            isset($_POST['last_name']) &&
+            isset($_POST['program_id'])
+        ) {
+            $isPaid = filter_var($_POST['isPaid'], FILTER_VALIDATE_BOOLEAN) ? 1 : 0;
+            if ($registration->updateIsPaid($_POST['id'], $isPaid)) {
+                echo "Paid status updated!";
+                if ($isPaid == 1) {
+                    $prog = new Programs();
+                    $program = $prog->retrieveOneProgram($_POST['program_id']);
+                    $message = file_get_contents("./templates/programs.php");
+
+                    $message = str_replace("[name]", ucwords($_POST['first_name']), $message);
+                    $message = str_replace("[program]", $program->title, $message);
+                    $message = str_replace("[facilitator]", $program->facilitator, $message);
+                    $message = str_replace("[date]", date("F d, Y", strtotime($program->program_date)), $message);
+                    $message = str_replace("[fromTime]", date("g:i A", strtotime($program->time_start)), $message);
+                    $message = str_replace("[toTime]", date("g:i A", strtotime($program->time_end)), $message);
+                    $message = str_replace("[venue]", $program->venue, $message);
+                    $message = str_replace("[price]", $program->price, $message);
+
+                    $mail = $registration->sendMail("Payment Received - Your Slot for $program->title is Confirmed!", $message, $_POST['email_address'], $_POST['first_name'] . " " . $_POST['last_name'], '.' . $program->image);
+                    if ($mail) {
+                        echo "Registration complete! Kindly proceed to checkout.";
+                    } else {
+                        echo "Error sending email!";
+                    }
+                } else {
+                    echo "isPaid is not 1, email not sent.";
+                }
+            } else {
+                echo "Error updating isPaid.";
+            }
+            break;
+        }
+        if (
+            isset($_POST['registration_type']) && isset($_POST['first_name']) && isset($_POST['last_name']) &&
+            isset($_POST['email_address']) && isset($_POST['mobile_number']) && isset($_POST['address']) &&
             isset($_POST['tin_num']) && isset($_POST['source_platform']) && isset($_POST['meal']) &&
-            isset($_POST['voucher']) && isset($_POST['referred_by']) && isset($_POST['program_id']) && isset($_POST['company_name']) &&
-            isset($_POST['position'])
+            isset($_POST['voucher']) && isset($_POST['referred_by']) && isset($_POST['program_id']) &&
+            isset($_POST['company_name']) && isset($_POST['position'])
         ) {
             $more_than_ten = isset($_FILES['more_than_ten']) ? $_FILES['more_than_ten'] : null;
             $targetPath2 = ($more_than_ten && $more_than_ten['error'] === UPLOAD_ERR_OK)
@@ -44,36 +83,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 $_POST['position'],
                 $targetPath2
             )) {
-                $success = true;
-                if ($more_than_ten && $more_than_ten['error'] === UPLOAD_ERR_OK) {
-                    $targetPath2 = "." . $targetPath2;
-                    if (!move_uploaded_file($more_than_ten['tmp_name'], $targetPath2)) {
-                        echo "Error uploading participants file!";
-                        $success = false;
-                    }
-                }
-                if ($success) {
-                    $prog = new Programs();
-                    $program = $prog->retrieveOneProgram($_POST['program_id']);
-                    $message = file_get_contents('./templates/programs.php');
-                    $message = str_replace("[name]", ucwords($_POST['first_name']), $message);
-                    $message = str_replace("[program]", $program->title, $message);
-                    $message = str_replace("[facilitator]", $program->facilitator, $message);
-                    $message = str_replace("[date]", date("F d, Y", strtotime($program->program_date)), $message);
-                    $message = str_replace("[fromTime]", date("g:i A", strtotime($program->time_start)), $message);
-                    $message = str_replace("[toTime]", date("g:i A", strtotime($program->time_end)), $message);
-                    $message = str_replace("[venue]", $program->venue, $message);
-
-                    $mail = $registration->sendMail("Thank you for your Registration!", $message, $_POST['email_address'], $_POST['first_name'] . " " . $_POST['last_name'], '.' . $program->image);
-                    if ($mail) {
-                        echo "Registration complete! Kindly proceed to checkout.";
-                    } else {
-                        echo "Error sending email!";
-                    }
-                    echo "Registration successful";
-                } else {
-                    echo "Error uploading file!";
-                }
+                echo "Registration inserted!";
             } else {
                 echo "Error inserting registration!";
             }
