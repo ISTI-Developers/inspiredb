@@ -24,6 +24,7 @@ class Registration extends Controller
         $address,
         $tin_num,
         $source_platform,
+        $expectations,
         $meal,
         $voucher,
         $referred_by,
@@ -35,10 +36,10 @@ class Registration extends Controller
         $this->setStatement(
             "INSERT INTO `registration`(
                 `registration_type`, `first_name`, `last_name`, `date_reg`, 
-                `email_address`, `mobile_number`, `address`, `tin_num`, `source_platform`, 
+                `email_address`, `mobile_number`, `address`, `tin_num`, `source_platform`, `expectations`,
                 `meal`, `voucher`, `referred_by`, `program_id`, `company_name`, `position`, 
-                `more_than_ten`, `status`
-            ) VALUES (?,?,?,NOW(),?,?,?,?,?,?,?,?,?,?,?,?,?)"
+                `more_than_ten`, `status`, `isPaid`
+            ) VALUES (?,?,?,NOW(),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
         );
         return $this->statement->execute([
             $registration_type,
@@ -49,6 +50,7 @@ class Registration extends Controller
             $address,
             $tin_num,
             $source_platform,
+            $expectations,
             $meal,
             $voucher,
             $referred_by,
@@ -56,7 +58,8 @@ class Registration extends Controller
             $company_name,
             $position,
             $more_than_ten,
-            1
+            1,
+            0
         ]);
     }
     function updateRegistration(
@@ -69,6 +72,7 @@ class Registration extends Controller
         $address,
         $tin_num,
         $source_platform,
+        $expectations,
         $meal,
         $voucher,
         $referred_by,
@@ -79,7 +83,7 @@ class Registration extends Controller
     ) {
         $this->setStatement("UPDATE `registration` SET `registration_type` = ?, `first_name` = ? , 
         `last_name` = ?, `email_address` = ?, `mobile_number` = ?, `address` = ?, `tin_num` = ?, 
-        `source_platform` = ?, `meal` = ?, `voucher` = ?, `referred_by` = ?, `program_id` = ?, 
+        `source_platform` = ?, `expectations` = ?, `meal` = ?, `voucher` = ?, `referred_by` = ?, `program_id` = ?, 
         `company_name` = ?, `position` = ?, `more_than_ten` = ? WHERE registrant_id = ? AND `status` = 1");
 
         return $this->statement->execute([
@@ -91,6 +95,7 @@ class Registration extends Controller
             $address,
             $tin_num,
             $source_platform,
+            $expectations,
             $meal,
             $voucher,
             $referred_by,
