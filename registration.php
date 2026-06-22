@@ -58,8 +58,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
         if (
             isset($_POST['registration_type']) && isset($_POST['first_name']) && isset($_POST['last_name']) &&
             isset($_POST['email_address']) && isset($_POST['mobile_number']) && isset($_POST['address']) &&
-            isset($_POST['tin_num']) && isset($_POST['source_platform']) && isset($_POST['meal']) &&
-            isset($_POST['voucher']) && isset($_POST['referred_by']) && isset($_POST['program_id']) &&
+            isset($_POST['tin_num']) && isset($_POST['source_platform']) 
+            // && isset($_POST['meal']) 
+            && isset($_POST['voucher']) && isset($_POST['referred_by']) && isset($_POST['program_id']) &&
             isset($_POST['company_name']) && isset($_POST['position'])
         ) {
             $more_than_ten = isset($_FILES['more_than_ten']) ? $_FILES['more_than_ten'] : null;
@@ -76,7 +77,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 $_POST['tin_num'],
                 $_POST['source_platform'],
                 $_POST['expectations'],
-                $_POST['meal'],
+                // $_POST['meal'],
                 $_POST['voucher'],
                 $_POST['referred_by'],
                 $_POST['program_id'],
@@ -106,7 +107,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 $info->tin_num,
                 $info->source_platform,
                 $info->expectations,
-                $info->meal,
+                // $info->meal,
                 $info->voucher,
                 $info->referred_by,
                 $info->program_id,
