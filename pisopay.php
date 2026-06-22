@@ -87,7 +87,7 @@ if ($session_id) {
         "branch_code" => "",
         "amount" => $amount,
         "delivery_fees" => 0,
-        "transaction_type" => "TEST",
+        "transaction_type" => "Online",
         "processor_name" => "Ameer Rojo",
         "customer_name" => $customer_name,
         "customer_email" => $customer_email,
@@ -97,7 +97,7 @@ if ($session_id) {
         "merchant_callback_url" => "#",
         "callback_url" => $callbackUrl,
         "ip_address" => $ip_address,
-        "expiry_date" => (new DateTime('+1 day'))->format('Y-m-d H:i:s')
+        "expiry_date" => (new DateTime('+2 day'))->format('Y-m-d H:i:s')
     ];
 
     $token = $f->generateToken($details, $arrayPostData);

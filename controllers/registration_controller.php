@@ -25,7 +25,7 @@ class Registration extends Controller
         $tin_num,
         $source_platform,
         $expectations,
-        $meal,
+        // $meal,
         $voucher,
         $referred_by,
         $program_id,
@@ -39,7 +39,7 @@ class Registration extends Controller
                 `email_address`, `mobile_number`, `address`, `tin_num`, `source_platform`, `expectations`,
                 `meal`, `voucher`, `referred_by`, `program_id`, `company_name`, `position`, 
                 `more_than_ten`, `status`, `isPaid`
-            ) VALUES (?,?,?,NOW(),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            ) VALUES (?,?,?,NOW(),?,?,?,?,?,'N/A',?,?,?,?,?,?,?,?,?)"
         );
         return $this->statement->execute([
             $registration_type,
@@ -51,7 +51,7 @@ class Registration extends Controller
             $tin_num,
             $source_platform,
             $expectations,
-            $meal,
+            // $meal,
             $voucher,
             $referred_by,
             $program_id,
@@ -73,7 +73,7 @@ class Registration extends Controller
         $tin_num,
         $source_platform,
         $expectations,
-        $meal,
+        // $meal,
         $voucher,
         $referred_by,
         $program_id,
@@ -83,7 +83,7 @@ class Registration extends Controller
     ) {
         $this->setStatement("UPDATE `registration` SET `registration_type` = ?, `first_name` = ? , 
         `last_name` = ?, `email_address` = ?, `mobile_number` = ?, `address` = ?, `tin_num` = ?, 
-        `source_platform` = ?, `expectations` = ?, `meal` = ?, `voucher` = ?, `referred_by` = ?, `program_id` = ?, 
+        `source_platform` = ?, `expectations` = ?, `meal` = 'N/A', `voucher` = ?, `referred_by` = ?, `program_id` = ?, 
         `company_name` = ?, `position` = ?, `more_than_ten` = ? WHERE registrant_id = ? AND `status` = 1");
 
         return $this->statement->execute([
@@ -96,7 +96,7 @@ class Registration extends Controller
             $tin_num,
             $source_platform,
             $expectations,
-            $meal,
+            // $meal,
             $voucher,
             $referred_by,
             $program_id,
