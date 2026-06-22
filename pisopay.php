@@ -25,9 +25,6 @@ $customer_phone = $_POST['mobile_number'] ?? '0000000000';
 $customer_address = $_POST['address'] ?? '2F HPL Building, 60 Sen. Gil Puyat Ave., Makati City 1200 Philippines';
 $program_id = $_POST['program_id'] ?? null;
 
-$customer_meal = $_POST['meal'] ?? "";
-$customer_meal_price = (float) ($_POST['meal_price'] ?? 0);
-
 $voucher = $_POST['voucher'] ?? "";
 $voucher_price = (float) ($_POST['voucher_price'] ?? 0);
 
@@ -53,14 +50,6 @@ if ($session_id) {
     $details = [
         ["name" => $program_name, "price" => $program_price, "quantity" => $quantity],
     ];
-
-    if ($customer_meal !== "No") {
-        $details[] = [
-            "name" => $customer_meal,
-            "price" => $customer_meal_price,
-            "quantity" => 1
-        ];
-    }
 
     if (!empty($voucher)) {
         $details[] = [
